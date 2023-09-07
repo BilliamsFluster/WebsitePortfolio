@@ -7,8 +7,17 @@ canvas {
   margin-left: auto;
   margin-right: auto;
   min-height: 100vh;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
+#accomplishments p 
+{
+  font-size: 2.3vh;
+  line-height: 4vh;
+}
 
 :root {
   --dark-bg: rgba(15, 15, 15, 0.65);
@@ -19,11 +28,24 @@ canvas {
   font-style: normal;
 }
 
+#work li
+{
+  font-size: 2.3vh;
+  line-height: 4vh;
+}
+#work h3
+{
+  font-size: 3.2vh;
+}
+#work p{
+  font-size: 2.8vh;
+  
+}
 
 main {
   display: grid;
   grid-template-columns: 1fr 1fr; /* This creates two equal-width columns */
-  gap: 2rem; /* This adds some space between your columns */
+  gap: 2rem; /* This adds some space between columns */
   padding-top: 70px;
   width: 100vw;
   color: white;
@@ -42,10 +64,68 @@ main {
 
 .logo
 {
+  position: relative;
+  top: -10px;
   margin: 0px;
   padding: 0px;
-  padding-right: 0.2vw;
+  padding-right: 0.1vw;
+  transition: transform 0.3s, filter 0.3s; /* Smooth transition for both effects */
   
+}
+.logo:hover {
+  filter: brightness(1.5); /* Makes the logo brighter on hover. Adjust as needed. */
+  transform: scale(1.1); /* Makes the logo 10% bigger on hover. Adjust as needed. */
+}
+.logoContainer
+{
+  padding-top: 2vh;
+  display: flex;
+  justify-content: flex-start; /* Align logos to the start */
+  align-items: center; /* Vertically center logos if needed */
+}
+
+.logo, .resumeButton {
+  vertical-align: middle; /* Ensure middle alignment */
+}
+
+.resumeButton {
+  display: inline-block;
+  padding: 8px 8px;
+  background: linear-gradient(90deg, #046301, #07F00B); /* Change colors as needed */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 0.1vw;
+  font-size: 2vh;
+  transition: background-color 0.3s ease;
+  animation: hintToPressNav 8s 2s ease-in-out both infinite;
+
+}
+#projects h2{
+  
+}
+
+
+.projectsButton {
+  display: inline-block;
+  padding: 8px 8px;
+  background: linear-gradient(90deg, #046301, #07F00B); /* Change colors as needed */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 0.1vw;
+  font-size: 1vh;
+  transition: background-color 0.3s ease;
+  animation: hintToPressNav 8s 2s ease-in-out both infinite;
+
+}
+
+.resumeButton:hover {
+  background-color: #555; /* Adjust hover color as needed */
 }
 .Interests
 {
@@ -81,16 +161,29 @@ main {
 }
 .card * {
   overflow: hidden;
+  
 }
 .card h1
 {
   font-size: calc(1vw + 0.5vh);
   margin: 0; /* this will remove any default margin from the <p> tag */
   padding: 0; /* this will remove any default padding from the <p> tag */
+  
+}
+.card.fadeIn {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.card.fadeIn.isIntersecting {
+  opacity: 1;
+  transform: translateY(0);
 }
 .card p
 {
   font-size: calc(1vw - 0.5vh);
+  line-height: 1.5vh;
   margin: 0; /* this will remove any default margin from the <p> tag */
   padding: 0; /* this will remove any default padding from the <p> tag */
 }
@@ -114,7 +207,51 @@ main {
   margin-top: 20px; /* Spacing from the title or other content */
   
 }
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  }
+}
 
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  }
+  .resumeButton
+  {
+    font-size: 1vh;
+    position: relative;
+    top: -10px;
+  }
+
+  .projectsButton
+  {
+    font-size: 0.5vh;
+
+  }
+
+  .card {
+    min-width: 200px;
+    min-height: 270px;
+  }
+
+  .card img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .card iframe {
+    height: 70%;
+  }
+
+  .card h1 {
+    font-size: 15px; /* Adjust as needed */
+  }
+
+  .card p {
+    font-size: 10px; /* Adjust as needed */
+  }
+}
 .card::before {
   content: "";
     position: absolute;
@@ -125,6 +262,84 @@ main {
     box-shadow: 0 0 5px 5px rgba(255, 255, 255, 0.1);
     opacity: 0.5;
     z-index: -1;
+}
+.progress-bar-container
+{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;   /* high z-index to ensure it's on top of other elements */
+
+}
+.loading-text {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+
+.loading-text > span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(1em);
+  animation: loadingTextAnimation 0.5s forwards;
+}
+
+@keyframes loadingTextAnimation {
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.loading-text > span:nth-child(1) { animation-delay: 0.5s; }
+.loading-text > span:nth-child(2) { animation-delay: 1s; }
+.loading-text > span:nth-child(3) { animation-delay: 1.5s; }
+.loading-text > span:nth-child(4) { animation-delay: 2s; }
+.loading-text > span:nth-child(5) { animation-delay: 2.5s; }
+.loading-text > span:nth-child(6) { animation-delay: 3s; }
+.loading-text > span:nth-child(7) { animation-delay: 3.5s; }
+
+.dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dots > div {
+  width: 15px;
+  height: 15px;
+  background-color: #3498db;
+  border-radius: 50%;
+  margin: 0 5px;
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+  animation: scaleDots 1.5s infinite alternate;
+}
+
+.dots > div:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.dots > div:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes scaleDots {
+  0% {
+      transform: scale(1);
+  }
+  100% {
+      transform: scale(1.5);
+  }
 }
 
 .left {
@@ -182,7 +397,7 @@ blockquote {
 }
 
 section {
-  font-size: calc(1rem + 2vw); /* adjust as needed */
+  font-size: calc(1rem + 1.4vw); /* adjust as needed */
 }
 
 p 
@@ -199,9 +414,10 @@ canvas {
   position: fixed;
   top: 0;
   left: 0;
-  margin-left: auto;
-  margin-right: auto;
-  min-height: 100vh;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 
@@ -220,14 +436,26 @@ section {
   grid-column: 2 / 8;
   padding: 1rem;
   padding-top: 70px;
-  transition: transform 0.2s ease-out;
-
+ 
+  opacity: 0;
+  transform: translateY(20px); /* Move them down slightly */
+  transition: opacity 0.5s ease, transform 0.5s ease;
   
   font-size: 1.25rem;
   line-height: 1.5;
   margin-bottom: var(--spacing);
   min-width: 300px;
   max-width: 60vw;
+}
+section.fadeIn {
+  opacity: 1; /* Set opacity to 1 to make the section fully visible */
+  transform: translateY(0); /* Reset transform to its original position */
+  transition: opacity 0.5s ease, transform 0.5s ease; /* Combine transitions */
+}
+
+
+section p{
+  line-height: 4vh;
 }
 
 [has-background]
@@ -262,83 +490,93 @@ blockquote p {
 
 
 
-.contactSection, #contact {
+.contactSection {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  padding: 40px;
+  backdrop-filter: blur(10px); /* Adds a subtle blur effect to the background */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.contactContainer {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+.contactContainer p
+{
+  
+  font-size: 32px;
+  color: #4caf50;
+  margin-bottom: 20px;
+  animation: fadeIn 1s ease-in;
 }
 form {
   width: 100%; /* Reduce this for larger screens if desired */
-  max-width: 500px; /* The form will not exceed this width */
 }
 .Input-Field {
   width: 100%;
-  height: 5vw; /* Adjusts based on viewport width */
-  margin: 1vw 0; /* Adjusts based on viewport width */
-  padding: 1vw; /* Adjusts based on viewport width */
-  border: 1px solid #ffffff; /* White border */
-  background-color: transparent; /* Transparent background */
-  color: #ffffff; /* White text color */
-  font-size: 1.5vw; /* Adjusts based on viewport width */
+  height: 50px;
+  margin: 10px 0;
+  padding: 10px;
+  border: 2px solid transparent; /* Transparent border */
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 16px;
   font-family: 'Source Code Pro', monospace;
+  transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+  outline: none; /* Remove default focus outline */
+}
+.Input-Field:focus {
+  border-color: #4caf50; /* Green border on focus */
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #4caf50; /* Green text color on focus */
 }
 
 .TextArea-Field {
-  height: 10vw; /* Adjusts based on viewport width */
+  height: 150px;
 }
 
 .Button {
-  width: 100%;
-  color: #0d0d0d; /* Dark text color */
-  padding: 1vw; /* Adjusts based on viewport width */
-  background-color: #ff4500; /* Bold color to grab attention */
-  font-size: 1.5vw; /* Adjusts based on viewport width */
+  background-color: #4caf50;
   border: none;
+  color: #ffffff;
+  padding: 10px 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+  font-size: 18px;
+  transition: background-color 0.3s;
 }
 
-
 .Button:hover {
-  background-color: #07F00B;
+  background-color: #45a049; /* Slightly darker green on hover */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 
 body, html 
 {
   overflow-x: hidden;
+  width: 100%;
   height: 100%;
   margin: 0;
+  padding: 0;
   background: linear-gradient(90deg, rgba(0, 121, 46, 0.7), rgba(4, 58, 25, 0.7));
   background-size: 200% 200%;
   animation: Gradient 5s ease infinite;
 }
 
-
-button.accordion {
-  font-family: 'Source Code Pro', monospace;
-  font-weight: 400;
-  font-style: normal;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  padding: 1vw;
-  width: 100%;
-  text-align: left;
-  border: none;
-  outline: none;
-  transition: 0.4s;
-  background: linear-gradient(90deg, rgba(0, 121, 46, 0.7), rgba(4, 58, 25, 0.7)); /* darker gradient for nighttime */
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-}
-
-button.accordion.active,
-button.accordion:hover {
-  background-color: rgba(0, 0, 51, 0.9); /* darker color for active/hover state */
-  color: white;
-  animation: none;
-}
 
 div.panel {
   padding: 0 18px;
@@ -408,7 +646,7 @@ div.panel.show {
 
 #navbar {
   position: fixed;
-  top: 0;
+  top: 10px;
   right: 0;
   width: 0;
   height: 50vh;
@@ -425,7 +663,11 @@ div.panel.show {
 #navbar.active {
   width: 12vw; /* Adjust this value as needed */
 }
-
+@media (max-width: 768px) {
+  #navbar.active {
+    width: 30vw; /* Adjust this value for mobile screens as needed */
+  }
+}
 
 #typing-effect:after {
   content: '|';
@@ -447,7 +689,9 @@ div.panel.show {
 
 #about p
 {
-line-height: 5vh;}
+  font-size: 2.3vh;
+  line-height: 4vh;
+}
 
 #about a {
   text-decoration: none;
@@ -464,6 +708,28 @@ line-height: 5vh;}
   
 }
 #about header{
+  line-height: 8vh;
+}
+
+#william p
+{
+line-height: 5vh;}
+
+#william a {
+  text-decoration: none;
+  margin-right: 10px; /* Optional: Adds some spacing between the icons */
+  line-height: 2vh;
+}
+
+/* Resize the icons */
+#william img {
+  width: 24px; /* Adjust this value as needed */
+  height: auto; /* Maintains the aspect ratio */
+  line-height: 0vh;
+  
+  
+}
+#william header{
   line-height: 8vh;
 }
 
@@ -532,49 +798,78 @@ line-height: 5vh;}
 }
 
 @keyframes hoverEffect {
-  100% { transform: scale(1.1); }
+  100% { filter: brightness(1.2); }
 }
 
-@keyframes clickEffect {
-  100% { transform: rotate(90deg); }
-}
+
 @keyframes hintToPressNav {
   0%, 20% { transform: scale(1); }
   10% { transform: scale(1.3); }
   21%, 100% { transform: scale(1); }
 }
 
+
 /* Styles for the toggle button */
 .nav-toggle {
   position: fixed;
   top: 1rem;
   right: 1rem;
-  background: transparent;
   border: none;
-  color: #f2f2f2;
+  
+  width: 20px; /* Reduced width */
+  height: 20px; /* Reduced height */
   font-size: 2rem;
   cursor: pointer;
   z-index: 100;
   animation: hintToPressNav 5s 2s ease-in-out both infinite;
+  display: flex;
+  flex-direction: column;
+  justify-content: scenter;
+  align-items: center;
 }
 .nav-toggle:hover {
   animation: hoverEffect 0.3s ease forwards;
 }
 
-.nav-toggle.active {
-  animation: clickEffect 0.3s ease forwards;
-}
-
 .nav-toggle:focus {
   outline: none;
 }
-
-.nav-toggle-line {
+.line1, .line2, .line3 {
+  background: #07F00B;
+  width: 50px; /* Reduced width */
+  height: 4px; /* Reduced height */
+  border-radius: 3px; /* Adjusted border-radius */
   display: block;
-  width: 2rem;
-  height: 0.25rem;
-  background: #f2f2f2;
-  margin: 0.5rem 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.5s;
+}
+
+.line1 {
+  width: 20px; /* Reduced width */
+  transform: translate(-40px, -15px); /* Adjusted transform */
+  transform-origin: 0 0;
+}
+.line2 {
+  width: 38px; /* Reduced width */
+  
+}
+
+.line3 {
+  width: 20px; /* Reduced width */
+  transform: translate(0px, 15px); /* Adjusted transform */
+  transform-origin: 100% 0;
+}
+.active .line1{
+  transform: translate(-1px, -2px) rotate(-45deg);
+}
+.active .line2{
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.active .line3{
+  transform: translate(-20px, -2px) rotate(-45deg);
 }
 
 

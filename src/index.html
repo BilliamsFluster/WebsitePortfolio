@@ -3,11 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <script type="module" src="script.js"></script>
+    
+    
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@1,300&display=swap" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="3xx32" href="../static/favicon-32x32.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    
+
 
     
     <title>William Wapniarek's Professional Portfolio</title>
@@ -15,28 +20,44 @@
   </head>
   
   <body>
-   
+    
     <canvas id="bg"></canvas>   
+    <div class = "progress-bar-container">
+      <div class="loading-text">
+        <span>L</span>
+        <span>o</span>
+        <span>a</span>
+        <span>d</span>
+        <span>i</span>
+        <span>n</span>
+        <span>g</span>
+        <div class="dots">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+      <progress id = "progress-bar" value = "0" max = "100"></progress>
+    </div>
 
     <main>
       
-      <button class="nav-toggle" id="navToggle">
-        <span class="nav-toggle-line"></span>
-        <span class="nav-toggle-line"></span>
-        <span class="nav-toggle-line"></span>
-      </button>
+      <div class="nav-toggle" id="navToggle">
+        <span class="line1"></span>
+        <span class="line2"></span>
+        <span class="line3"></span>
+      </div>
       
       <nav id="navbar">
         <a href="#about">About</a>
         <a href="#projects">Portfolio</a>
         <a href="#accomplishments">Achievements</a>
         <a href="#work">Experience</a>
-        <a href="#skills">Skills</a>
         <a href="#contact">Contact</a>
         
       </nav>
 
-      <section id="about" >
+      <section id = "william" >
         <header>
           <h1 class = "William">William Wapniarek</h1>
           <p class = "Interests">I'm a <span id="typing-container"><span id="typing-effect" class="highlighted-text"></span></span> </p>
@@ -52,38 +73,33 @@
               <a  href="https://www.instagram.com/william_wapniarek/" target="_blank" title="Follow my fitness journey on Instagram">
                 <img src="../static/instagram.png" alt="Instagram" class = "logo">
               </a>
+              
+              <a href="#contact" id = "introContactButton" class="resumeButton">Contact</a>
             </div>
         </header>
       </section>
-      
-     
 
+      <section has-background id = "about">
+        <h2>About</h2>
+          <p>
+            As a self-taught Game Developer, I derive immense satisfaction from translating thoughts into playable realities. 
+            I believe in consistent learning and sharing knowledge while maintaining a sense of joy in the process. 
+            Collaborating on ambitious projects to bring game functionality to life is a pursuit I thoroughly enjoy. 
+            It is my aspiration to contribute my skills and passion to a AAA game studio, collaborating with a like-minded team, 
+            to produce innovative games that players can appreciate.
 
-      <blockquote>
-        <p>I am intrigued by the process of translating ideas into interactive realities.</p>
-      </blockquote>
-
-      <section has-background>
-        <h2>📜 Manifesto</h2>
-        <p>
-          As a passionate and self-taught Game Developer, I derive immense satisfaction from translating thoughts into playable realities. 
-          I believe in consistent learning and sharing knowledge while maintaining a sense of joy in the process. 
-          Collaborating on ambitious projects to bring game functionality to life is a pursuit I thoroughly enjoy. 
-          It is my aspiration to contribute my skills and passion to a AAA game studio, collaborating with a like-minded team, 
-          to produce innovative games that players can appreciate.
-
-        </p>
-          
-        
-
-            
+          </p>
+          <a href="https://docs.google.com/document/d/12GtkKixHYPvFlJCWfXx_4etS_pKIu5v70eESW6R86J4/export?format=pdf" download title="Download Resume" class="resumeButton">
+            Download Resume
+          </a>
 
       </section>
 
       <section  id = "projects">
         
-      <h2>Portfolio</h2>
       <div class="container" >
+        <h2>Portfolio</h2>
+
         <div class="grid-container">
           
             
@@ -127,7 +143,9 @@
             </div>
 
         </div>
-        <a href = "https://drive.google.com/drive/folders/111pisKrV3F5KYgseSwgEfey2jJHOQPM1">Download some of my games here</a> 
+        <a href="https://drive.google.com/drive/folders/111pisKrV3F5KYgseSwgEfey2jJHOQPM1" download title="Download Projects" class="projectsButton">
+          Download Projects
+        </a>
       </div>
     </section>
       
@@ -136,7 +154,7 @@
 
       
       <section id = "accomplishments" has-background>
-        <h2>🏆 Accomplishments</h2>
+        <h2>Accomplishments</h2>
   
         <p>
           In my 8th grade, I was recognized with the Tech Award, an accolade that inspired me to establish the coding club in my high school. Since then, 
@@ -147,12 +165,9 @@
           I was honored to be included in the President's List and Dean's List for my exemplary academic performance during the first and second semesters.
         </p>
       </section>
-      <blockquote>
-        <p>"Everybody should learn to program a computer, because it teaches you how to think." <br>- Steve Jobs</p>
-      </blockquote>
-
+      
       <section id="work" class = "left" has-background>
-        <h2>🧑‍💻 Work History</h2>
+        <h2>Work History</h2>
 
         <h3>Black Rocket Productions</h3>
         <p>
@@ -177,85 +192,19 @@
         
 
       </section>
-      <section id="skills" has-background>
-        <h2>Professional Skills</h2>
-        <button class="accordion">Unreal Engine 4 (UE4) Proficiencies</button>
-        <div class="panel">
-            <ul>
-              <h2>Unreal Engine 4 (UE4) Proficiencies</h2>
-              <ul>
-                <li>Blueprints & C++: Experienced in leveraging UE4 Blueprints and C++ for game design and development.</li>
-                <li>Animation: Skilled in using UE4 tools to create engaging and dynamic animations for gameplay.</li>
-                <li>Game Design: Proficient in using UE4 for conceptualizing and executing unique game designs.</li>
-                <li>Gameplay Programming: Well-versed in programming diverse gameplay elements and mechanics using UE4.</li>
-              </ul>
-            </ul>
-        </div>
-    
-        <button class="accordion">Programming Languages</button>
-        <div class="panel">
-            <ul>
-              <h3>Programming Languages</h3>
-              <ul>
-                <li>C++: Proficient in C++ with a specific focus on game development.</li>
-                <li>Python: Intermediate knowledge of Python for scripting and automation tasks.</li>
-                <li>JavaScript: Knowledgeable in JavaScript, especially for front-end web development.</li>
-                <li>HTML & CSS: Proficient in building and styling webpages using HTML and CSS.</li>
-              </ul>
-            </ul>
-        </div>
+      
 
-        <button class="accordion">3D Modeling & Animation</button>
-        <div class="panel">
-            <ul>
-              <h3>3D Modeling & Animation</h3>
-              <ul>
-                <li>Blender: Skilled in creating 3D models, animations, and scenes using Blender.</li>
-                <li>Polygon Modeling: Proficient in polygon modeling techniques for creating intricate 3D assets.</li>
-                <li>Blender Animation: Experienced in using Blender for 3D animation projects.</li>
-                <li>Rigging: Knowledgeable in the rigging process, crucial for character animation in games.</li>
-              </ul>
-            </ul>
+      <section class="contactSection">
+        <div id="contact" class="contactContainer">
+          <p>Lets Work Together</p>
+          <form action="https://formsubmit.co/461901ef353fbb389f206a8f40c0a6d4" method="POST">
+            <input type="text" name="Name" class="Input-Field" placeholder="Your Name">
+            <input type="email" name="Email" class="Input-Field" placeholder="Your Email">
+            <input type="text" class="Input-Field" placeholder="Subject">
+            <textarea name="Message" class="Input-Field TextArea-Field" placeholder="Message"></textarea>
+            <button type="submit" class="Input-Field Button">Send Message</button>
+          </form>
         </div>
-
-        <button class="accordion">Additional Skills</button>
-        <div class="panel">
-            <ul>
-              <h3>Additional Skills</h3>
-              <ul>
-                <li>Pipeline Management: Familiar with game development pipeline stages, from concept to release.</li>
-                <li>Communication: Excellent interpersonal communication skills, vital for team-based projects.</li>
-                <li>Task Organization: Proficient in task organization and prioritization to ensure project completion within deadlines.</li>
-                <li>Leadership: Proven leadership skills, gained through experience leading the high school coding club.</li>
-              </ul>
-            </ul>
-        </div>
-
-        <button class="accordion">Educational Courses</button>
-        <div class="panel">
-            <ul>
-              <h2>Educational Courses</h2>
-                <ul>
-                  <li>UE4 C++ The Ultimate Shooter Course: Comprehensive course covering advanced game development techniques in UE4 and C++.</li>
-                  <li>UE4 C++ The Ultimate Game Developer Course: Extensive training on becoming a proficient game developer using UE4 and C++.</li>
-                  <li>Learn C++ For Game Development Course: Detailed course focusing on using C++ for game development.</li>
-                  <li>Game Cinematic using UE4 and Adobe Premiere Course: Specialized training on creating game cinematics using UE4 and video editing with Adobe Premiere.</li>
-                </ul>
-            </ul>
-        </div>
-    
-    </section>
-
-      <section has-background >
-      <div id = "contact" class = "contactSection">
-        <form action="https://formsubmit.co/461901ef353fbb389f206a8f40c0a6d4" method="POST"></form>
-          <input type = "text" name = "Name" class = "Input-Field" placeholder="Your Name">
-          <input type = "email" name = "Email" class = "Input-Field" placeholder="Your Email">
-          <input type = "Text" class = "Input-Field" placeholder="Subject">
-          <textarea name = "Message" class = "Input-Field TextArea-Field" placeholder="Message"></textarea>
-          <button type = "submit" class = "Input-Field Button">Send Message</button>
-        
-      </div>
       </section>
 
     </main>

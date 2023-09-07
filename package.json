@@ -21,6 +21,7 @@
         "portfinder-sync": "0.0.2",
         "raw-loader": "^4.0.2",
         "scrollmagic": "^2.0.8",
+        "stats.js": "^0.17.0",
         "style-loader": "^3.3.1",
         "three": "^0.140.2",
         "type": "^2.7.2",

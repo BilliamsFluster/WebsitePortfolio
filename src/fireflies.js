@@ -10,14 +10,14 @@ export function createFirefly(scene) {
 
   if (FIREFLY_POOL.length > 0) {
     firefly = FIREFLY_POOL.pop();
-    fireflyLight = LIGHT_POOL.pop();
+    //fireflyLight = LIGHT_POOL.pop();
   } else {
     firefly = new THREE.Mesh(fireflyGeometry, fireflyMaterial);
-    fireflyLight = new THREE.PointLight(0xffff00, 1, 2); // adjust color, intensity and distance as needed
+    //fireflyLight = new THREE.PointLight(0xffff00, 1, 2); // adjust color, intensity and distance as needed
   }
 
   firefly.position.set(Math.random() * 10 - 5, Math.random() * 20 - 10, Math.random() * 100 - 50); // adjust range as needed
-  fireflyLight.position.copy(firefly.position);
+  //fireflyLight.position.copy(firefly.position);
 
   scene.add(firefly, fireflyLight);
   
@@ -32,7 +32,7 @@ function destroyFirefly(scene, fireflyObject) {
   scene.remove(fireflyObject.firefly, fireflyObject.fireflyLight);
 
   FIREFLY_POOL.push(fireflyObject.firefly);
-  LIGHT_POOL.push(fireflyObject.fireflyLight);
+  //LIGHT_POOL.push(fireflyObject.fireflyLight);
 }
 
 

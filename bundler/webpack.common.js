@@ -5,6 +5,7 @@ const path = require('path')
 
 module.exports = {
     entry: path.resolve(__dirname, '../src/script.js'),
+    
     output:
     {
         hashFunction: 'xxhash64',

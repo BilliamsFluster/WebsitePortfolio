@@ -10,7 +10,6 @@ document.onreadystatechange = function () {
   if (document.readyState == "interactive" || document.readyState == "complete") {
       var acc = document.getElementsByClassName("accordion");
       var i;
-      
       function removeAnimation() {
           for (var j = 0; j < acc.length; j++) {
               acc[j].style.animation = '';

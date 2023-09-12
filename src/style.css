@@ -103,14 +103,14 @@ main {
   animation: hintToPressNav 8s 2s ease-in-out both infinite;
 
 }
-#projects h2{
-  
+
+
+#projects a{
+  font-size: 2vh;
 }
-
-
 .projectsButton {
   display: inline-block;
-  padding: 8px 8px;
+  padding: 8px 10px;
   background: linear-gradient(90deg, #046301, #07F00B); /* Change colors as needed */
   color: #fff;
   border: none;
@@ -118,7 +118,8 @@ main {
   text-decoration: none;
   font-weight: bold;
   margin-left: 0.1vw;
-  font-size: 1vh;
+  width:12vw;
+  height: 1.5vw;
   transition: background-color 0.3s ease;
   animation: hintToPressNav 8s 2s ease-in-out both infinite;
 
@@ -148,13 +149,11 @@ main {
 .card {
   background-color:  rgba(13, 25, 32, 0.85);
   width: 15vw; /* Set a fixed width */
-  height: 20vw; /* Set a fixed height */
+  height: 22vw; /* Set a fixed height */
   margin: 10px;
   padding: 10px; /* Reduced padding */
   transition: transform 0.3s; /* Smooth transition for the tilt effect */
-  border: 3px solid;
-  border-radius: 20px; /* Adjust as needed */
-  border-color: #07F00B;
+  border-radius: 10px; /* Adjust as needed */
 
   position: relative;
   overflow: hidden; /* To keep the highlight effect within the card */
@@ -207,28 +206,34 @@ main {
   margin-top: 20px; /* Spacing from the title or other content */
   
 }
-@media (max-width: 768px) {
-  .grid-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+@media (max-width: 1280px) {
+  .projectsButton
+  {
+    font-size: 0.5vh;
+    width: 15vw;
+    height:2vw;
   }
+  
 }
 
 @media (max-width: 768px) {
   .grid-container {
     grid-template-columns: repeat(2, 1fr); /* 2 columns */
   }
+ 
   .resumeButton
   {
-    font-size: 1vh;
+    font-size: 2vh;
     position: relative;
     top: -10px;
   }
-
   .projectsButton
   {
     font-size: 0.5vh;
-
+    width: 40vw;
+    height:5vw;
   }
+  
 
   .card {
     min-width: 200px;
@@ -647,7 +652,7 @@ div.panel.show {
 #navbar {
   position: fixed;
   top: 10px;
-  right: 0;
+  right: 10px;
   width: 0;
   height: 50vh;
   background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.877), rgba(0, 0, 0,.877)); 
@@ -658,6 +663,7 @@ div.panel.show {
   overflow: hidden;
   transition: width 0.3s ease-in-out;
   padding: 1rem 0; /* Add some padding on top and bottom for better layout */
+  z-index: 100;
 
 }
 #navbar.active {

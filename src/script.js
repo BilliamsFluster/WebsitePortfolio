@@ -1,14 +1,19 @@
 import './style.css';
 import * as THREE from 'three';
+import * as YUKA from 'yuka';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
+import {FBXLoader} from 'three/examples/jsm/loaders/FBXLoader'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { ColorCorrectionShader } from 'three/examples/jsm/shaders/ColorCorrectionShader';
+import {Fox} from './fox.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'; 
 import Stats from 'stats.js'
 import { fireflies, createFirefly } from './fireflies.js';
 import { NighttimeShader } from './shaders';
+import * as TWEEN from '@tweenjs/tween.js'; // Import the TWEEN library
+
 
 
 
@@ -227,6 +232,100 @@ loader.load(
   }
 );
 
+const fbxLoader = new FBXLoader();
+// Declare the mixer variable outside of the loader callback
+let mixer;
+let fox;
+const entityManager = new YUKA.EntityManager();
+let foxClass;
+let deer;
+
+
+// Load the FBX model for fox
+fbxLoader.load(
+  'Fox.fbx',
+  function (object) {
+    // Set the position and rotation of the loaded model
+    object.position.set(-10, 3, camera.position.z + 5);
+    object.scale.set(0.004,
+                     0.004,
+                     0.004);
+    object.rotation.set(0, -3.12, 3.0);
+    object.rotation.z += 0.1;
+    fox = object
+    // Add the loaded model to the scene
+    scene.add(object);
+    if (object.animations.length > 0) 
+    {
+      mixer = new THREE.AnimationMixer(fox);
+      const animations = new Map();
+      const idleAction = mixer.clipAction(fox.animations[9]); // Idle animation
+      idleAction.play();
+      idleAction.enabled = false;
+
+      const walkAction = mixer.clipAction(fox.animations[12]); // Walk animation
+      walkAction.play();
+      walkAction.enabled = false;
+
+      const RunAction = mixer.clipAction(fox.animations[1]); // Run animation
+      RunAction.play();
+      RunAction.enabled = false;
+      animations.set('IDLE', idleAction);
+      animations.set('WALK', walkAction);
+      animations.set('RUN', RunAction);
+
+      foxClass = new Fox(mixer, animations);
+      entityManager.add(foxClass);
+
+
+
+      
+    }
+   
+    
+  },
+  function (xhr) {
+    console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+  },
+  function (error) {
+    console.error('An error occurred', error);
+  }
+);
+
+//load fbx model for the deer
+fbxLoader.load(
+  'Deer.fbx',
+  function (object) {
+    // Set the position and rotation of the loaded model
+    object.position.set(-2, 2.3, 47.2);
+    object.scale.set(0.004,
+                     0.004,
+                     0.004);
+    object.rotation.set(-.65, -0.78, 2.5);
+    object.rotation.z += 0.1;
+    deer = object
+    // Add the loaded model to the scene
+    scene.add(object);
+    if (object.animations.length > 0) 
+    {
+      mixer = new THREE.AnimationMixer(deer);
+      const eatingAction = mixer.clipAction(deer.animations[12]); // Eating animation
+      eatingAction.play();
+    }
+   
+    
+  },
+  function (xhr) {
+    console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+  },
+  function (error) {
+    console.error('An error occurred', error);
+  }
+);
+
+const time = new YUKA.Time();
+
+
 
 
 // Scroll Animation
@@ -282,7 +381,7 @@ document.onreadystatechange = function () {
       animateRandomButton();
   }
 };
-document.querySelectorAll('.card').forEach(card => {
+/*document.querySelectorAll('.card').forEach(card => {
   card.addEventListener('mousemove', (e) => {
       let rect = card.getBoundingClientRect();
       let x = e.clientX - rect.left;
@@ -295,7 +394,7 @@ document.querySelectorAll('.card').forEach(card => {
   card.addEventListener('mouseleave', () => {
       card.style.transform = 'rotateX(0) rotateY(0)';
   });
-});
+});*/
 
 
 
@@ -358,7 +457,7 @@ $(window).on('load', function() {
   }
   
 
-  
+
   $(document).on("scroll", function() {
     var scrollPos = $(document).scrollTop() + $(window).height() * 0.3;
     var tags = $("section");
@@ -373,6 +472,7 @@ $(window).on('load', function() {
         }
     });
   });
+  
 });
 // Create a function to handle the intersection
 function handleIntersection(entries, observer) {
@@ -437,6 +537,105 @@ for(let i = 0; i < 50; i++){ // 50 fireflies
   const fireflyObject = createFirefly(scene);
   fireflies.push(fireflyObject);
 }
+let foxState = 'idle';
+const offset = 5; // Adjust the offset value as needed
+let foxPositionZ = camera.position.z + offset; // Initialize the fox's position to match the camera's position
+const lagFactor = 0.07; // Adjust this value to control the lag effect
+let scrollSpeed = 0;
+let targetZ = 0;
+let lastCameraPositionZ = camera.position.z; // Store the previous camera position
+
+
+
+
+ // Idle animation
+function handleFoxMovement(scrollSpeed) {
+  // Determine the fox's state based on scroll speed
+  if (scrollSpeed < 0.01) {
+    foxState = 'idle';
+    if(foxClass)
+    {
+      foxClass.isIdle = true;
+      foxClass.isRunning = false;
+      foxClass.isWalking = false;
+
+    }
+  } else if (scrollSpeed < 0.4) {
+    foxState = 'walk';
+    if(foxClass)
+    {
+      foxClass.isIdle = false;
+      foxClass.isRunning = false;
+      foxClass.isWalking = true;
+
+    }
+  } else {
+    foxState = 'run';
+    if(foxClass)
+    {
+      foxClass.isIdle = false;
+      foxClass.isRunning = true;
+      foxClass.isWalking = false;
+
+    }
+  }
+
+  const maxFoxZ = 70; // Maximum Z position for the fox
+
+  // Calculate the target Z position for the fox (in front of the camera)
+  const targetFoxZ = camera.position.z + offset;
+  
+  if (foxPositionZ <= maxFoxZ) {
+    // Calculate the desired Z position with lag
+    const desiredZ = foxPositionZ + (targetFoxZ - foxPositionZ) * lagFactor;
+  
+    // Apply an easing function to gradually slow down when reaching the limit
+    foxPositionZ = Math.min(desiredZ, maxFoxZ);
+  
+    // Update the fox's position in the scene
+    if (fox) {
+      fox.position.z = foxPositionZ;
+    }
+  }
+
+  
+}
+
+
+
+// Initialize variables
+let lastScrollY = window.scrollY;
+let currentRotation = 'up'; // Initialize with the "up" direction
+let targetRotation = 0; // Initialize the target rotation
+
+// Function to smoothly update the fox's rotation
+function smoothRotateFox(targetRotation) {
+  const easing = 0.05; // Adjust the easing value for smoother rotation
+  fox.rotation.y += (targetRotation - fox.rotation.y) * easing;
+}
+
+// Function to update the fox's rotation based on scroll direction
+function updateFoxRotation() {
+  const currentScrollY = window.scrollY;
+  const scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
+
+  if (scrollDirection === 'down' && currentRotation !== 'down') {
+    // Rotate the fox away from the camera smoothly
+    targetRotation = -3.2;
+    currentRotation = 'down';
+  } else if (scrollDirection === 'up' && currentRotation !== 'up') {
+    // Rotate the fox towards the camera smoothly
+    targetRotation = 3.1;
+    currentRotation = 'up';
+  }
+
+  lastScrollY = currentScrollY;
+
+  // Call the function to smoothly update the fox's rotation
+  smoothRotateFox(targetRotation);
+}
+
+// Function to move the camera on scroll
 function moveCameraOnScroll() {
   const t = document.documentElement.scrollTop || document.body.scrollTop; // Get the scroll position
 
@@ -444,18 +643,35 @@ function moveCameraOnScroll() {
   const maxScrollValue = document.documentElement.scrollHeight - window.innerHeight;
 
   // Map the scroll position to the camera's `z` position
-  let targetZ = (t / maxScrollValue) * (maxScrollZ - minScrollZ) + minScrollZ;
+  targetZ = (t / maxScrollValue) * (maxScrollZ - minScrollZ) + minScrollZ;
 
   if (finishedLoading) {
     // Check the limits
     if (targetZ < minScrollZ) targetZ = minScrollZ;
     if (targetZ > maxScrollZ) targetZ = maxScrollZ;
 
-    if (cameraTargetZ === undefined && Math.abs(camera.position.z - targetZ) > 0.01) {
-      camera.position.z += (targetZ - camera.position.z) * 0.05; // Adjust the 0.05 value to control the speed of the movement
+    // Check if the camera's position has changed since the last frame
+    if (Math.abs(camera.position.z - lastCameraPositionZ) > 0.01) {
+      // Camera is moving, update lastCameraPositionZ
+      lastCameraPositionZ = camera.position.z;
     }
+
+    // Call the function to update the fox's rotation based on scroll direction
+    updateFoxRotation();
+
+    // Update the camera position
+    camera.position.z += (targetZ - camera.position.z) * 0.06; // Adjust the 0.05 value to control the speed of the movement
+    scrollSpeed = Math.abs(camera.position.z - targetZ);
   }
 }
+
+// Attach the moveCameraOnScroll function to the scroll event
+window.addEventListener('scroll', moveCameraOnScroll, false);
+
+// Call moveCameraOnScroll on scroll events
+window.addEventListener('scroll', moveCameraOnScroll);
+
+
 
 
 
@@ -526,7 +742,6 @@ function updateFireflies() {
 
       // Flicker effect
       //fireflyLight.intensity = 0.8 + Math.sin(Date.now() * 0.005) * 0.2;
-      console.log(camera.position.z);
   });
 }
 
@@ -536,7 +751,13 @@ function animate() {
   requestAnimationFrame(animate);
   updateCameraRotation();
   updateFireflies();
-  
+  const delta = time.update().getDelta();
+  entityManager.update(delta);
+  if (mixer) {
+    mixer.update(0.01);
+  }
+  handleFoxMovement(scrollSpeed);
+  scrollSpeed = 0;
   stats.begin()
   
 
